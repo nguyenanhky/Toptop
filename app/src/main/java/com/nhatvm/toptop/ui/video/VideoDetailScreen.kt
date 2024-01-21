@@ -1,5 +1,6 @@
 package com.nhatvm.toptop.ui.video
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
@@ -27,7 +28,10 @@ fun VideoDetailScreen(
         // loading
         videoDetailViewModel.handleAction(VideoDetailAction.LoadData(videoId))
     }
-    VideoDetailScreen(uiState = uiState.value, player = videoDetailViewModel.videoPlayer)
+    VideoDetailScreen(uiState = uiState.value, player = videoDetailViewModel.videoPlayer) {
+        videoDetailAction ->
+        videoDetailViewModel.handleAction(videoDetailAction)
+    }
 }
 
 @UnstableApi
@@ -35,6 +39,7 @@ fun VideoDetailScreen(
 fun VideoDetailScreen(
     uiState: VideoDetailUiState,
     player: Player,
+    handleAction: (VideoDetailAction) -> Unit,
 ) {
     when (uiState) {
         is VideoDetailUiState.Loading -> {
@@ -44,7 +49,7 @@ fun VideoDetailScreen(
         }
 
         is VideoDetailUiState.Success -> {
-            VideoDetailScreen(player = player)
+            VideoDetailScreen(player = player, handleAction = handleAction)
         }
 
         else -> {
@@ -58,9 +63,16 @@ fun VideoDetailScreen(
 @Composable
 fun VideoDetailScreen(
     player: Player,
+    handleAction: (VideoDetailAction) -> Unit,
 ) {
     ConstraintLayout(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(
+                onClick = {
+                    handleAction(VideoDetailAction.ToggleVideo)
+                }
+            )
     ) {
         val (videoPlayerView, sideBar) = createRefs()
         TopTopVideoPlayer(player = player, modifier = Modifier.constrainAs(videoPlayerView) {

@@ -7,6 +7,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import com.nhatvm.toptop.Logger
 import com.nhatvm.toptop.data.repositories.VideoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -37,7 +38,11 @@ class VideoDetailViewModel @Inject constructor(
                 loadVideo(videoId = videoId)
             }
             is VideoDetailAction.ToggleVideo->{
+                if(videoPlayer.isLoading){
 
+                }else{
+                    if(videoPlayer.isPlaying)  videoPlayer.pause() else videoPlayer.play()
+                }
             }
         }
     }
