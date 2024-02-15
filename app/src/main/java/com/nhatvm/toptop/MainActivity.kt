@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,7 +13,7 @@ import androidx.media3.common.util.UnstableApi
 import com.nhatvm.toptop.ui.theme.ToptopTheme
 import com.nhatvm.toptop.ui.video.VideoDetailScreen
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
+
 @UnstableApi
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
