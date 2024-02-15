@@ -105,7 +105,7 @@ fun VideoDetailScreen(
             hashTags = listOf("Jetpack compose", "android", "tiktok"),
             songName = "Making my way",
             modifier = Modifier.constrainAs(videoInfo){
-                start.linkTo(parent.start)
+                start.linkTo(parent.start, margin = 16.dp)
                 bottom.linkTo(sideBar.bottom)
                 end.linkTo(sideBar.start)
                 width = Dimension.fillToConstraints
