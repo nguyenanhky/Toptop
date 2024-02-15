@@ -9,7 +9,8 @@ class VideoRepository @Inject constructor(
     private val videos = listOf(
         R.raw.khesanh,
         R.raw.thanhcoquangtri,
-        R.raw.vuahung
+        R.raw.vuahung,
+        R.raw.ngocanh
     )
 
     fun getVideo() = videos.random()
