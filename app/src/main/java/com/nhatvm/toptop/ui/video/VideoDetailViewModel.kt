@@ -7,6 +7,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import com.nhatvm.toptop.Logger
 import com.nhatvm.toptop.data.repositories.VideoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -26,27 +27,26 @@ class VideoDetailViewModel @Inject constructor(
         get() = _uiState
 
     init {
+        Logger.lod("VideoDetailViewModel init")
         videoPlayer.repeatMode = Player.REPEAT_MODE_ALL
         videoPlayer.playWhenReady = true
         videoPlayer.prepare()
     }
-    fun handleAction(action: VideoDetailAction){
-        when(action){
-            is VideoDetailAction.LoadData->{
+
+    fun handleAction(action: VideoDetailAction) {
+        when (action) {
+            is VideoDetailAction.LoadData -> {
                 val videoId = action.id
                 loadVideo(videoId = videoId)
             }
-            is VideoDetailAction.ToggleVideo->{
-                if(videoPlayer.isLoading){
 
-                }else{
-                    if(videoPlayer.isPlaying)  videoPlayer.pause() else videoPlayer.play()
-                }
+            is VideoDetailAction.ToggleVideo -> {
+                toggleVideoPlayer()
             }
         }
     }
 
-    private fun loadVideo(videoId:Int){
+    private fun loadVideo(videoId: Int) {
         _uiState.value = VideoDetailUiState.Loading
         viewModelScope.launch {
             delay(100L)
@@ -57,12 +57,30 @@ class VideoDetailViewModel @Inject constructor(
         }
     }
 
-    private fun playVideo(videoResourceId:Int){
+    private fun playVideo(videoResourceId: Int) {
         val uri = RawResourceDataSource.buildRawResourceUri(videoResourceId)
-        val mediaItem  = MediaItem.fromUri(uri)
+        val mediaItem = MediaItem.fromUri(uri)
         videoPlayer.setMediaItem(mediaItem)
         videoPlayer.play()
     }
+
+    private fun toggleVideoPlayer() {
+        if (videoPlayer.isLoading) {
+
+        } else
+            if (videoPlayer.isPlaying) {
+                videoPlayer.pause()
+            } else {
+                videoPlayer.play()
+            }
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        videoPlayer.release()
+    }
+
 
 }
 //MVVM
@@ -75,9 +93,9 @@ sealed interface VideoDetailUiState {
     data class Error(val msg: String) : VideoDetailUiState
 }
 
-sealed class VideoDetailAction{
-    data class LoadData(val id:Int):VideoDetailAction()
-    object ToggleVideo:VideoDetailAction()
+sealed class VideoDetailAction {
+    data class LoadData(val id: Int) : VideoDetailAction()
+    object ToggleVideo : VideoDetailAction()
 
 }
 

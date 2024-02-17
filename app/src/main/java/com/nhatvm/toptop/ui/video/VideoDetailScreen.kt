@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.nhatvm.toptop.designsystem.TopTopVideoPlayer
@@ -24,7 +23,7 @@ import com.nhatvm.toptop.ui.video.composables.VideoInfoArea
 @Composable
 fun VideoDetailScreen(
     videoId: Int,
-    videoDetailViewModel: VideoDetailViewModel = hiltViewModel(),
+    videoDetailViewModel: VideoDetailViewModel
 ) {
     val uiState = videoDetailViewModel.uiState.collectAsState()
     if (uiState.value == VideoDetailUiState.Default) {
