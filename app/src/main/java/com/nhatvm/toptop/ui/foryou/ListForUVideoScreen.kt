@@ -14,9 +14,15 @@ import com.nhatvm.toptop.ui.video.VideoDetailViewModel
 @Composable
 fun ListForUVideoScreen(
     modifier: Modifier = Modifier,
+    onShowComment:(Int)->Unit
+
 ) {
     VerticalPager(pageCount = 10) { videoId ->
         val videoDetailViewModel: VideoDetailViewModel = hiltViewModel(key = videoId.toString())
-        VideoDetailScreen(videoId = videoId, videoDetailViewModel = videoDetailViewModel)
+        VideoDetailScreen(
+            videoId = videoId,
+            videoDetailViewModel = videoDetailViewModel,
+            onShowComment =  onShowComment
+        )
     }
 }

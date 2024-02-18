@@ -23,7 +23,8 @@ import com.nhatvm.toptop.ui.video.composables.VideoInfoArea
 @Composable
 fun VideoDetailScreen(
     videoId: Int,
-    videoDetailViewModel: VideoDetailViewModel
+    videoDetailViewModel: VideoDetailViewModel,
+    onShowComment: (Int) -> Unit
 ) {
     val uiState = videoDetailViewModel.uiState.collectAsState()
     if (uiState.value == VideoDetailUiState.Default) {
@@ -32,7 +33,10 @@ fun VideoDetailScreen(
     }
     VideoDetailScreen(
         uiState = uiState.value,
-        player = videoDetailViewModel.videoPlayer
+        player = videoDetailViewModel.videoPlayer,
+        onShowComment = {
+            onShowComment(videoId)
+        }
     ) { videoDetailAction ->
         videoDetailViewModel.handleAction(videoDetailAction)
     }
@@ -43,6 +47,7 @@ fun VideoDetailScreen(
 fun VideoDetailScreen(
     uiState: VideoDetailUiState,
     player: Player,
+    onShowComment:()->Unit,
     handleAction: (VideoDetailAction) -> Unit,
 ) {
     when (uiState) {
@@ -53,7 +58,7 @@ fun VideoDetailScreen(
         }
 
         is VideoDetailUiState.Success -> {
-            VideoDetailScreen(player = player, handleAction = handleAction)
+            VideoDetailScreen(player = player, handleAction = handleAction,onShowComment = onShowComment)
         }
 
         else -> {
@@ -67,6 +72,7 @@ fun VideoDetailScreen(
 @Composable
 fun VideoDetailScreen(
     player: Player,
+    onShowComment: () -> Unit,
     handleAction: (VideoDetailAction) -> Unit,
 ) {
     ConstraintLayout(
@@ -90,7 +96,7 @@ fun VideoDetailScreen(
         SideBarView(
             onAvatarClick = { /*TODO*/ },
             onLikeClick = { /*TODO*/ },
-            onChatClick = { /*TODO*/ },
+            onChatClick = onShowComment,
             onSaveClick = { /*TODO*/ },
             onShareClick = {},
             modifier = Modifier.constrainAs(sideBar) {
